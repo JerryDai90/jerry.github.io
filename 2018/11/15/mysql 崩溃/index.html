@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="mysql 崩溃导入了一张100W 多万的表，导入到一半mysql 就挂了，怎么重启服务都启动不了。系统页没有沾满空间。 这个时候直接使用 mysqld 来启动，这个时候系统也是启动失败的，这个时候我就删除掉有问题的库。再次启动的时候就可以了。 1/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2018/11/15/mysql 崩溃/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="mysql 崩溃导入了一张100W 多万的表，导入到一半mysql 就挂了，怎么重启服务都启动不了。系统页没有沾满空间。 这个时候直接使用 mysqld 来启动，这个时候系统也是启动失败的，这个时候我就删除掉有问题的库。再次启动的时候就可以了。 1/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/l">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-07-07T12:16:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="mysql 崩溃导入了一张100W 多万的表，导入到一半mysql 就挂了，怎么重启服务都启动不了。系统页没有沾满空间。 这个时候直接使用 mysqld 来启动，这个时候系统也是启动失败的，这个时候我就删除掉有问题的库。再次启动的时候就可以了。 1/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/l">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mysql 崩溃" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/15/mysql 崩溃/" class="article-date">
+  <time datetime="2018-11-15T02:55:52.000Z" itemprop="datePublished">2018-11-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="mysql-崩溃"><a href="#mysql-崩溃" class="headerlink" title="mysql 崩溃"></a>mysql 崩溃</h1><p>导入了一张100W 多万的表，导入到一半mysql 就挂了，怎么重启服务都启动不了。系统页没有沾满空间。</p>
+<p>这个时候直接使用 mysqld 来启动，这个时候系统也是启动失败的，这个时候我就删除掉有问题的库。再次启动的时候就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib/mysql/plugin --user=mysql --skip-log-error --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/lib/mysql/mysql.sock &amp;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">018-11-15T02:25:26.216519Z 0 [ERROR] InnoDB: Datafile &apos;./itsf4_hn/wfexpression.ibd&apos; is corrupted. Cannot determine the space ID from the first 64 pages.</span><br><span class="line">2018-11-15T02:25:26.219646Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfform.ibd&apos; with space ID 24779, since the redo log references ./itsf4_hn/wfform.ibd with space ID 24505.</span><br><span class="line">2018-11-15T02:25:26.223857Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfjsstrategy.ibd&apos; with space ID 24780, since the redo log references ./itsf4_hn/wfjsstrategy.ibd with space ID 24506.</span><br><span class="line">2018-11-15T02:25:26.230234Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wflastsubmitlog.ibd&apos; with space ID 24781, since the redo log references ./itsf4_hn/wflastsubmitlog.ibd with space ID 24507.</span><br><span class="line">2018-11-15T02:25:26.247740Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wflatelyactor.ibd&apos; with space ID 24782, since the redo log references ./itsf4_hn/wflatelyactor.ibd with space ID 24508.</span><br><span class="line">2018-11-15T02:25:26.250235Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wflockinfo.ibd&apos; with space ID 24783, since the redo log references ./itsf4_hn/wflockinfo.ibd with space ID 24509.</span><br><span class="line">2018-11-15T02:25:26.252935Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfoperaterlog.ibd&apos; with space ID 24784, since the redo log references ./itsf4_hn/wfoperaterlog.ibd with space ID 24510.</span><br><span class="line">2018-11-15T02:25:26.261046Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wforgstrategy.ibd&apos; with space ID 24785, since the redo log references ./itsf4_hn/wforgstrategy.ibd with space ID 24511.</span><br><span class="line">2018-11-15T02:25:26.263893Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfparticipant.ibd&apos; with space ID 24786, since the redo log references ./itsf4_hn/wfparticipant.ibd with space ID 24512.</span><br><span class="line">2018-11-15T02:25:26.266675Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprinter.ibd&apos; with space ID 24787, since the redo log references ./itsf4_hn/wfprinter.ibd with space ID 24513.</span><br><span class="line">2018-11-15T02:25:26.269732Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprocess.ibd&apos; with space ID 24788, since the redo log references ./itsf4_hn/wfprocess.ibd with space ID 24514.</span><br><span class="line">2018-11-15T02:25:26.272724Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprocessattach.ibd&apos; with space ID 24789, since the redo log references ./itsf4_hn/wfprocessattach.ibd with space ID 24515.</span><br><span class="line">2018-11-15T02:25:26.276628Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprocessformprint.ibd&apos; with space ID 24790, since the redo log references ./itsf4_hn/wfprocessformprint.ibd with space ID 24516.</span><br><span class="line">2018-11-15T02:25:26.281096Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprocessinstance.ibd&apos; with space ID 24791, since the redo log references ./itsf4_hn/wfprocessinstance.ibd with space ID 24517.</span><br><span class="line">2018-11-15T02:25:26.284610Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfprocessinstext.ibd&apos; with space ID 24792, since the redo log references ./itsf4_hn/wfprocessinstext.ibd with space ID 24518.</span><br><span class="line">2018-11-15T02:25:26.292722Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfrecycledata.ibd&apos; with space ID 24793, since the redo log references ./itsf4_hn/wfrecycledata.ibd with space ID 24519.</span><br><span class="line">2018-11-15T02:25:26.307107Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfroute.ibd&apos; with space ID 24794, since the redo log references ./itsf4_hn/wfroute.ibd with space ID 24520.</span><br><span class="line">2018-11-15T02:25:26.314730Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfselectstrategy.ibd&apos; with space ID 24795, since the redo log references ./itsf4_hn/wfselectstrategy.ibd with space ID 24521.</span><br><span class="line">2018-11-15T02:25:26.319170Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfshowstrategy.ibd&apos; with space ID 24796, since the redo log references ./itsf4_hn/wfshowstrategy.ibd with space ID 24522.</span><br><span class="line">2018-11-15T02:25:26.320955Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfsyscode.ibd&apos; with space ID 24797, since the redo log references ./itsf4_hn/wfsyscode.ibd with space ID 24523.</span><br><span class="line">2018-11-15T02:25:26.324213Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wftoread.ibd&apos; with space ID 24798, since the redo log references ./itsf4_hn/wftoread.ibd with space ID 24524.</span><br><span class="line">2018-11-15T02:25:26.335248Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfworkday.ibd&apos; with space ID 24799, since the redo log references ./itsf4_hn/wfworkday.ibd with space ID 24525.</span><br><span class="line">2018-11-15T02:25:26.338531Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfworkitemn.ibd&apos; with space ID 24800, since the redo log references ./itsf4_hn/wfworkitemn.ibd with space ID 24526.</span><br><span class="line">2018-11-15T02:25:26.341828Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfworkitemnlog.ibd&apos; with space ID 24801, since the redo log references ./itsf4_hn/wfworkitemnlog.ibd with space ID 24527.</span><br><span class="line">2018-11-15T02:25:26.344871Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfworkitemo.ibd&apos; with space ID 24802, since the redo log references ./itsf4_hn/wfworkitemo.ibd with space ID 24528.</span><br><span class="line">2018-11-15T02:25:26.350222Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wfworkoperationlog.ibd&apos; with space ID 24803, since the redo log references ./itsf4_hn/wfworkoperationlog.ibd with space ID 24529.</span><br><span class="line">2018-11-15T02:25:26.353173Z 0 [Note] InnoDB: Ignoring data file &apos;./itsf4_hn/wx_menu.ibd&apos; with space ID 24804, since the redo log references ./itsf4_hn/wx_menu.ibd with space ID 24530.</span><br><span class="line">2018-11-15T02:25:26.443005Z 0 [Note] InnoDB: Doing recovery: scanned up to log sequence number 7312203052</span><br><span class="line">2018-11-15T02:25:26.597373Z 0 [Note] InnoDB: Database was not shutdown normally!</span><br><span class="line">2018-11-15T02:25:26.597401Z 0 [Note] InnoDB: Starting crash recovery.</span><br><span class="line">2018-11-15T02:25:26.598619Z 0 [ERROR] InnoDB: Tablespace 24778 was not found at ./itsf4_hn/wfexpression.ibd.</span><br><span class="line">2018-11-15T02:25:26.598635Z 0 [ERROR] InnoDB: Set innodb_force_recovery=1 to ignore this and to permanently lose all changes to the tablespace.</span><br><span class="line">2018-11-15T02:25:26.598663Z 0 [ERROR] InnoDB: Cannot continue operation.</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/15/mysql 崩溃/" data-id="ck08ycut3000egofyo44q64pj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/06/下载 maven 的相关 jar/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/06/mysql 结构对比工具/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/07/test/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/07/我的博客搬家啦/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/07/记上车时间-2019年6月29日早上7点/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/06/mysql 5.6.38 安装（redhat 6）/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

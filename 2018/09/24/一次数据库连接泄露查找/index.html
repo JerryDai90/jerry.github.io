@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一次数据库连接泄露查找背景有一老项目，在最近出现了耗尽连接数报错。基本半天就会爆掉了。（还部署了双机，更加加快了耗尽连接数的速度）。把代码下载下来的时候吃了一惊，这项目竟然没用数据库连接池。直接使用了这货 org.springframework.jdbc.datasource.DriverManagerDataSource。这货是没有连接池概念的，来一个就创建一个。  那为什么还会连接数耗尽呢？经">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2018/09/24/一次数据库连接泄露查找/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一次数据库连接泄露查找背景有一老项目，在最近出现了耗尽连接数报错。基本半天就会爆掉了。（还部署了双机，更加加快了耗尽连接数的速度）。把代码下载下来的时候吃了一惊，这项目竟然没用数据库连接池。直接使用了这货 org.springframework.jdbc.datasource.DriverManagerDataSource。这货是没有连接池概念的，来一个就创建一个。  那为什么还会连接数耗尽呢？经">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://img.lsof.fun/2018-09-24-15377557097437.jpg">
+<meta property="og:image" content="http://img.lsof.fun/2018-09-24-15377673023807.jpg">
+<meta property="og:image" content="http://img.lsof.fun/2018-09-24-95_047bc205625b0b30-1ec21c4782d02bf2-dcadbe84ab9fad4514af544849194203.jpg">
+<meta property="og:updated_time" content="2019-09-05T14:35:28.626Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="一次数据库连接泄露查找背景有一老项目，在最近出现了耗尽连接数报错。基本半天就会爆掉了。（还部署了双机，更加加快了耗尽连接数的速度）。把代码下载下来的时候吃了一惊，这项目竟然没用数据库连接池。直接使用了这货 org.springframework.jdbc.datasource.DriverManagerDataSource。这货是没有连接池概念的，来一个就创建一个。  那为什么还会连接数耗尽呢？经">
+<meta name="twitter:image" content="http://img.lsof.fun/2018-09-24-15377557097437.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-一次数据库连接泄露查找" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/24/一次数据库连接泄露查找/" class="article-date">
+  <time datetime="2018-09-24T02:00:02.000Z" itemprop="datePublished">2018-09-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一次数据库连接泄露查找"><a href="#一次数据库连接泄露查找" class="headerlink" title="一次数据库连接泄露查找"></a>一次数据库连接泄露查找</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>有一老项目，在最近出现了耗尽连接数报错。基本半天就会爆掉了。（还部署了双机，更加加快了耗尽连接数的速度）。把代码下载下来的时候吃了一惊，这项目竟然没用数据库连接池。直接使用了这货 <code>org.springframework.jdbc.datasource.DriverManagerDataSource</code>。这货是没有连接池概念的，来一个就创建一个。</p>
+<p><img src="http://img.lsof.fun/2018-09-24-15377557097437.jpg" alt="-c200"></p>
+<p>那为什么还会连接数耗尽呢？经过调试，发现刷新三观的获取连接的方式。</p>
+<blockquote>
+<p>代码我就不上了，简单说一下。这个函数的目的是拿到数据库原生连接对象。首先先获取配置好的 DataSource，通过 DataSource 来获取用户名、密码、驱动 <del>_</del>，然后在通用这些 create 一个 Connection。这 TM 是临时工做的吧。</p>
+</blockquote>
+<p>另外有是这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Session session = <span class="keyword">super</span>.getSession();</span><br><span class="line"><span class="comment">//后面没有关闭</span></span><br></pre></td></tr></table></figure>
+
+<p>还有这样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Connection connection = <span class="keyword">super</span>.getSession().connection();</span><br><span class="line"><span class="comment">//也没有关闭</span></span><br></pre></td></tr></table></figure>
+
+<p>这样的 <code>Session</code> 获取方式 <code>Hibernate</code> 是不会进行管理的了。也就是说要手动关闭。需要改动的地方太多了（而且修改后需要大量的测试，得不偿失）。需要想一个办法来解决这个问题。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>经过研究，决定从 <code>DataSource</code> 对象下手。前提条件需要可以判断这个连接空闲的时间。使用 mysql 命令可以查看到当前线程数。<br><img src="http://img.lsof.fun/2018-09-24-15377673023807.jpg" alt="-c500"><br>查看 JDBC 的规范，并没有连接最后执行时间的方法。<br><img src="http://img.lsof.fun/2018-09-24-95_047bc205625b0b30-1ec21c4782d02bf2-dcadbe84ab9fad4514af544849194203.jpg" alt="-c"></p>
+<p>最后从 Mysql 的驱动实现下手。 <code>com.mysql.jdbc.Connection</code> 里面有个方法叫 <code>getIdleFor</code>，实现类在 <code>com.mysql.jdbc.ConnectionImpl</code>。这个方法可以知道当前连接最后执行完成 sql 语句后的等待时间。</p>
+<p>上代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.Connection;</span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无连接池功能，仅仅是因为代码中有巨多不规范代码导致开启了数据库链接没有关闭导致连接数耗尽 bug 修复.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> jerry</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2018 -09-24 18:07:48</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSource4FixedConnLeak</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">springframework</span>.<span class="title">jdbc</span>.<span class="title">datasource</span>.<span class="title">DriverManagerDataSource</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Log LOG = LogFactory.getLog(DataSource4FixedConnLeak.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> List&lt;Connection&gt; cacheConn = <span class="keyword">new</span> ArrayList&lt;Connection&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line"></span><br><span class="line">        Timer timer = <span class="keyword">new</span> Timer();</span><br><span class="line"></span><br><span class="line">        TimerTask task = <span class="keyword">new</span> TimerTask() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (cacheConn) &#123;</span><br><span class="line">                        Iterator&lt;Connection&gt; iterator = cacheConn.iterator();</span><br><span class="line">                        <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">                            Connection next = iterator.next();</span><br><span class="line">                            <span class="keyword">if</span> (next.isClosed()) &#123;</span><br><span class="line">                                iterator.remove();</span><br><span class="line">                            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                com.mysql.jdbc.Connection connection = (com.mysql.jdbc.Connection) next;</span><br><span class="line">                                <span class="comment">//空闲100毫秒就关闭</span></span><br><span class="line">                                <span class="keyword">if</span> (connection.getIdleFor() &gt;= <span class="number">500l</span>) &#123;</span><br><span class="line"><span class="comment">//                                    LOG.info("isAlive close");</span></span><br><span class="line">                                    connection.close();</span><br><span class="line">                                    iterator.remove();</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    LOG.error(e.getMessage(), e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        timer.schedule(task, <span class="number">500L</span>, <span class="number">1000</span> * <span class="number">2l</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addConnection</span><span class="params">(Connection connection)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (cacheConn) &#123;</span><br><span class="line">            cacheConn.add(connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Connection <span class="title">getConnection</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Connection connection = <span class="keyword">super</span>.getConnection();</span><br><span class="line">        addConnection(connection);</span><br><span class="line">        <span class="keyword">return</span> connection;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展知识"><a href="#扩展知识" class="headerlink" title="扩展知识"></a>扩展知识</h2><p>经过 <code>Hibernate</code> 调用的创建的 <code>Connection</code> 都会进行关闭。（脱离管理的 Session 不在范围内）以下是 <code>org.springframework.orm.hibernate3.HibernateTemplate</code> 的执行查询代码片段。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Execute the action specified by the given action object within a Session.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> action callback object that specifies the Hibernate action</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> enforceNewSession whether to enforce a new Session for this template</span></span><br><span class="line"><span class="comment"> * even if there is a pre-bound transactional Session</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> enforceNativeSession whether to enforce exposure of the native</span></span><br><span class="line"><span class="comment"> * Hibernate Session to callback code</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a result object returned by the action, or &lt;code&gt;null&lt;/code&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> org.springframework.dao.DataAccessException in case of Hibernate errors</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> &lt;T&gt; <span class="function">T <span class="title">doExecute</span><span class="params">(HibernateCallback&lt;T&gt; action, <span class="keyword">boolean</span> enforceNewSession, <span class="keyword">boolean</span> enforceNativeSession)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> DataAccessException </span>&#123;</span><br><span class="line"></span><br><span class="line">	Assert.notNull(action, <span class="string">"Callback object must not be null"</span>);</span><br><span class="line"></span><br><span class="line">	Session session = (enforceNewSession ?</span><br><span class="line">			SessionFactoryUtils.getNewSession(getSessionFactory(), getEntityInterceptor()) : getSession());</span><br><span class="line">	<span class="keyword">boolean</span> existingTransaction = (!enforceNewSession &amp;&amp;</span><br><span class="line">			(!isAllowCreate() || SessionFactoryUtils.isSessionTransactional(session, getSessionFactory())));</span><br><span class="line">	<span class="keyword">if</span> (existingTransaction) &#123;</span><br><span class="line">		logger.debug(<span class="string">"Found thread-bound Session for HibernateTemplate"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	FlushMode previousFlushMode = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		previousFlushMode = applyFlushMode(session, existingTransaction);</span><br><span class="line">		enableFilters(session);</span><br><span class="line">		Session sessionToExpose =</span><br><span class="line">				(enforceNativeSession || isExposeNativeSession() ? session : createSessionProxy(session));</span><br><span class="line">		T result = action.doInHibernate(sessionToExpose);</span><br><span class="line">		flushIfNecessary(session, existingTransaction);</span><br><span class="line">		<span class="keyword">return</span> result;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (HibernateException ex) &#123;</span><br><span class="line">		<span class="keyword">throw</span> convertHibernateAccessException(ex);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (SQLException ex) &#123;</span><br><span class="line">		<span class="keyword">throw</span> convertJdbcAccessException(ex);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (RuntimeException ex) &#123;</span><br><span class="line">		<span class="comment">// Callback code threw application exception...</span></span><br><span class="line">		<span class="keyword">throw</span> ex;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">finally</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (existingTransaction) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Not closing pre-bound Hibernate Session after HibernateTemplate"</span>);</span><br><span class="line">			disableFilters(session);</span><br><span class="line">			<span class="keyword">if</span> (previousFlushMode != <span class="keyword">null</span>) &#123;</span><br><span class="line">				session.setFlushMode(previousFlushMode);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Never use deferred close for an explicitly new Session.</span></span><br><span class="line">			<span class="keyword">if</span> (isAlwaysUseNewSession()) &#123;</span><br><span class="line">				SessionFactoryUtils.closeSession(session);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//close Connection</span></span><br><span class="line">				SessionFactoryUtils.closeSessionOrRegisterDeferredClose(session, getSessionFactory());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关闭方法运行堆栈</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">at org.hibernate.jdbc.ConnectionManager.closeConnection(ConnectionManager.java:474)</span><br><span class="line">at org.hibernate.jdbc.ConnectionManager.cleanup(ConnectionManager.java:408)</span><br><span class="line">at org.hibernate.jdbc.ConnectionManager.close(ConnectionManager.java:347)</span><br><span class="line">at org.hibernate.impl.SessionImpl.close(SessionImpl.java:335)</span><br><span class="line">at org.springframework.orm.hibernate3.SessionFactoryUtils.closeSession(SessionFactoryUtils.java:802)</span><br><span class="line">at org.springframework.orm.hibernate3.SessionFactoryUtils.closeSessionOrRegisterDeferredClose(SessionFactoryUtils.java:788)</span><br><span class="line">at org.springframework.orm.hibernate3.HibernateTemplate.doExecute(HibernateTemplate.java:434)</span><br><span class="line">at org.springframework.orm.hibernate3.HibernateTemplate.executeWithNativeSession(HibernateTemplate.java:374)</span><br><span class="line">at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:512)</span><br><span class="line">at org.springframework.orm.hibernate3.HibernateTemplate.get(HibernateTemplate.java:506)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/24/一次数据库连接泄露查找/" data-id="ck08ycust0009gofy1qudjgq3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/01/macOS 升级 10.14/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/17/微信返回按钮触发关闭（android 和 iOS 都支持）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/07/test/">test</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/07/我的博客搬家啦/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/07/记上车时间-2019年6月29日早上7点/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/06/mysql 5.6.38 安装（redhat 6）/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
