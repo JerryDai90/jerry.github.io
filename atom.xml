@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>竹间</title>
   
-  
+  <subtitle>码上生活</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://gh.lsof.fun/"/>
@@ -10,7 +10,7 @@
   <id>http://gh.lsof.fun/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Jerry dai</name>
     
   </author>
   
@@ -202,6 +202,29 @@
   </entry>
   
   <entry>
+    <title>categories</title>
+    <link href="http://gh.lsof.fun/2018/09/30/ie9-zai-da-kai-kong-zhi-tai-ke-yi-zheng-chang-jia-zai-ye-mian-fou-ze-jia-zai-shi-bai/"/>
+    <id>http://gh.lsof.fun/2018/09/30/ie9-zai-da-kai-kong-zhi-tai-ke-yi-zheng-chang-jia-zai-ye-mian-fou-ze-jia-zai-shi-bai/</id>
+    <published>2018-09-30T09:25:30.000Z</published>
+    <updated>2019-09-08T13:03:35.555Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;ie9-在打开控制台可以正常加载页面，否则加载失败&quot;&gt;&lt;a href=&quot;#ie9-在打开控制台可以正常加载页面，否则加载失败&quot; class=&quot;headerlink&quot; title=&quot;ie9 在打开控制台可以正常加载页面，否则加载失败&quot;&gt;&lt;/a&gt;ie9
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title></title>
     <link href="http://gh.lsof.fun/2018/09/24/yi-ci-shu-ju-ku-lian-jie-xie-lu-cha-zhao/"/>
     <id>http://gh.lsof.fun/2018/09/24/yi-ci-shu-ju-ku-lian-jie-xie-lu-cha-zhao/</id>
@@ -376,29 +399,6 @@
         
         
           &lt;h1 id=&quot;jQuery插件开发-面向对象&quot;&gt;&lt;a href=&quot;#jQuery插件开发-面向对象&quot; class=&quot;headerlink&quot; title=&quot;jQuery插件开发-面向对象&quot;&gt;&lt;/a&gt;jQuery插件开发-面向对象&lt;/h1&gt;&lt;p&gt;最近在做一个 OA
-        
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://gh.lsof.fun/2018/05/28/ie9-zai-da-kai-kong-zhi-tai-ke-yi-zheng-chang-jia-zai-ye-mian-fou-ze-jia-zai-shi-bai/"/>
-    <id>http://gh.lsof.fun/2018/05/28/ie9-zai-da-kai-kong-zhi-tai-ke-yi-zheng-chang-jia-zai-ye-mian-fou-ze-jia-zai-shi-bai/</id>
-    <published>2018-05-28T06:18:58.000Z</published>
-    <updated>2019-07-07T12:17:31.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;ie9-在打开控制台可以正常加载页面，否则加载失败&quot;&gt;&lt;a href=&quot;#ie9-在打开控制台可以正常加载页面，否则加载失败&quot; class=&quot;headerlink&quot; title=&quot;ie9 在打开控制台可以正常加载页面，否则加载失败&quot;&gt;&lt;/a&gt;ie9
         
       
     
